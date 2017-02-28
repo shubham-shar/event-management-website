@@ -17,6 +17,13 @@ body {
 footer {
     margin: 50px 0;
 }
+#login-btn {
+  float: right;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
 hr {
   border-color: #F05F40;
   border-width: 3px;
