@@ -9,7 +9,13 @@ body {
   width: 100%;
 }
 body {
-  font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+#event-page {
+  padding-top: 70px;
+}
+footer {
+    margin: 50px 0;
 }
 hr {
   border-color: #F05F40;
