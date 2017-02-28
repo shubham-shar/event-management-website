@@ -17,12 +17,11 @@ body {
 footer {
     margin: 50px 0;
 }
-#login-btn {
+.login-btn {
   float: right;
-  margin-top: 3px;
-  margin-bottom: 3px;
-  padding-left: 30px;
-  padding-right: 30px;
+}
+#login-btn {
+  margin: 0;
 }
 hr {
   border-color: #F05F40;
@@ -82,17 +81,17 @@ aside {
   -moz-transition: all 0.35s;
   transition: all 0.35s;
 }
-.navbar-default .navbar-header .navbar-brand {
+.navbar-default .header-navbar .navbar-brand {
   color: #F05F40;
   font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 700;
   text-transform: uppercase;
 }
-.navbar-default .navbar-header .navbar-brand:hover,
-.navbar-default .navbar-header .navbar-brand:focus {
+.navbar-default .header-navbar .navbar-brand:hover,
+.navbar-default .header-navbar .navbar-brand:focus {
   color: #eb3812;
 }
-.navbar-default .navbar-header .navbar-toggle {
+.navbar-default .header-navbar .navbar-toggle {
   font-weight: 700;
   font-size: 12px;
   color: #222222;
@@ -122,11 +121,11 @@ aside {
   .navbar-default {
     border-color: rgba(255, 255, 255, 0.3);
   }
-  .navbar-default .navbar-header .navbar-brand {
+  .navbar-default .header-navbar .navbar-brand {
     color: #F05F40;
   }
-  .navbar-default .navbar-header .navbar-brand:hover,
-  .navbar-default .navbar-header .navbar-brand:focus {
+  .navbar-default .header-navbar .navbar-brand:hover,
+  .navbar-default .header-navbar .navbar-brand:focus {
     color: #F05F40;
   }
   .navbar-default .nav > li > a,
@@ -141,12 +140,12 @@ aside {
     background-color: white;
     border-color: rgba(34, 34, 34, 0.05);
   }
-  .navbar-default.affix .navbar-header .navbar-brand {
+  .navbar-default.affix .header-navbar .navbar-brand {
     color: #F05F40;
     font-size: 14px;
   }
-  .navbar-default.affix .navbar-header .navbar-brand:hover,
-  .navbar-default.affix .navbar-header .navbar-brand:focus {
+  .navbar-default.affix .header-navbar .navbar-brand:hover,
+  .navbar-default.affix .header-navbar .navbar-brand:focus {
     color: #eb3812;
   }
   .navbar-default.affix .nav > li > a,
