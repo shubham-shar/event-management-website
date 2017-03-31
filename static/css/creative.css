@@ -6,8 +6,9 @@ body {
 body {
   font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
 }
-#event-page {
-  padding-top: 70px;
+.margins {
+    margin-top: 70px;
+    margin-bottom: 70px;
 }
 #homeHeading {
     margin: 40px;
@@ -16,9 +17,6 @@ body {
 #cont-head {
     margin-bottom: 8%;
     margin-left: 10px;
-}
-#contact {
-    margin-bottom: 10%;
 }
 footer {
     margin: 50px 0;
