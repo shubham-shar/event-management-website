@@ -14,6 +14,15 @@ class UserAccounts(Base):
     username = Column(String(80), primary_key=True)
     password = Column(String(80), nullable=False)
     acc_type = Column(String(10), default="default")
+    
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'username': self.username,
+            'password': self.password,
+            'acc_type': self.acc_type,
+        }
 
 class UserProfiles(Base):
     __tablename__ = 'user_profiles'

@@ -46,9 +46,4 @@ message1=Messages(title="first message", message="you piece of shit", events=eve
 session.add(message1)
 session.commit()
 
-comment1=Comments(comment="hey i like to comment", post_date="28/03/2017", events=event1, user_accounts=user)
-
-session.add(comment1)
-session.commit()
-
 print "all done"

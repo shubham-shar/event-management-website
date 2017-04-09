@@ -58,9 +58,15 @@
                     <li>
                         <a class="page-scroll" href="{{url_for('eventList', event_type='previous')}}">Previous</a>
                     </li>
+                    {% if logged == None %}
                     <li>
                         <a class="page-scroll" href="{{url_for('loginPage')}}">Login</a>
                     </li>
+                    {% else %}
+                    <li>
+                        <a class="page-scroll" href="{{url_for('dashboard')}}">Dashboard</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -101,10 +107,10 @@
                 <a class="btn btn-primary" href="{{url_for('eventInfo', event_id=event.id)}}">View Event<span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
         </div>
+        <hr>
         <!-- /.row -->
         {% endfor %}
-        
-        <hr>
+
         <!-- Address and Contact Information -->
         <div class="row">
             <h2 class="text-uppercase" id="cont-head">Contact Details :</h2>

@@ -49,9 +49,15 @@
                     <li>
                         <a class="page-scroll" href="{{url_for('eventList', event_type='previous')}}">Previous</a>
                     </li>
+                    {% if logged == None %}
                     <li>
                         <a class="page-scroll" href="{{url_for('loginPage')}}">Login</a>
                     </li>
+                    {% else %}
+                    <li>
+                        <a class="page-scroll" href="{{url_for('dashboard')}}">Dashboard</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -81,7 +87,7 @@
                 <p><span class="glyphicon glyphicon-time"></span> Posted on {{event.post_date}}</p>
 
                 <!-- Preview Image -->
-                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                <img class="img-responsive" src="http://placehold.it/1200x300" alt="">
 
                 <!-- Post Content -->
                 <p class="lead">{{event.description}}</p>

@@ -19,9 +19,6 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 
-    <!-- Plugin CSS -->
-    <link href="{{ url_for('static', filename='vendor/magnific-popup/magnific-popup.css') }}" rel="stylesheet">
-
     <!-- Custom CSS -->
     <link href="{{ url_for('static', filename='css/creative.css') }}" rel="stylesheet">
 
@@ -35,9 +32,15 @@
             <div class="header-navbar">
                 <a class="navbar-brand page-scroll" href="#page-top">Chitkara University</a>
             </div>
+            {% if logged == None %}
             <div class="login-btn">
                 <a href="{{url_for('loginPage')}}" class="btn btn-primary page-scroll btn-xl" id="login-btn">Login</a>
             </div>
+            {% else %}
+            <div class="login-btn">
+                <a href="{{url_for('dashboard')}}" class="btn btn-primary page-scroll btn-xl" id="login-btn">Dashboard</a>
+            </div>
+            {% endif %}
         </div>
         <!-- /.container-fluid -->
     </nav>
