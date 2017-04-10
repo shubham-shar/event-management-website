@@ -78,7 +78,8 @@ def postEvent():
         Session.commit()
         return redirect(url_for('eventInfo', event_id=event.id))
     else:
-        return render_template('post_event.html')
+        users = Session.query(UserAccounts).all()
+        return render_template('post_event.html', logged=session.get('username'), users=users)
 
 #@app.route('/my_events/')
 #def myEvents():
@@ -94,6 +95,23 @@ def logout():
     session['username'] = None
     session['acc_type'] = None
     return redirect(url_for('mainPage'))
+
+@app.route('/edit_profile/', methods=['GET', 'POST'])
+def editProfile():
+    profile = Session.query(UserProfiles).filter_by(username=session.get('username')).one()
+    if request.method == 'POST':
+        profile.f_name=request.form['f_name']
+        profile.l_name=request.form['l_name']
+        profile.dob=request.form['dob']
+        profile.mobile=request.form['mobile']
+        profile.gender=request.form['gender']
+        profile.rollno=request.form['rollno']
+        profile.email=request.form['email']
+        Session.add(profile)
+        Session.commit()
+        return redirect(url_for('editProfile'))
+    else:
+        return render_template('edit_profile.html', logged=session.get('username'), profile=profile)
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(12)

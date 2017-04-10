@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import datetime
 
 from database_setup import Base, UserAccounts, UserProfiles, Teams, Lists, ListItems, Messages, TeamMembers, Events, Comments
 
@@ -21,7 +22,7 @@ userprof=UserProfiles(f_name="Surya Kant", l_name="Bansal", dob="29/11/1997", mo
 session.add(userprof)
 session.commit()
 
-event1=Events(title="Sample Event", type="ongoing", starts="21/04/2017", ends="23/04/2017", description="it is a good event. you will enjoy it.", contact="me", club="dexter's", post_date="28/03/2017")
+event1=Events(title="Sample Event", type="ongoing", starts="21/04/2017", ends="23/04/2017", description="it is a good event. you will enjoy it.", contact="me", club="dexter's", post_date=datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"), head="skb1129")
 
 session.add(event1)
 session.commit()

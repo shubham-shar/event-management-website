@@ -50,6 +50,8 @@ class Events(Base):
     contact = Column(Text)
     club = Column(String(20), nullable=False)
     post_date = Column(String(20), nullable=False)
+    head = Column(String(80), ForeignKey('user_accounts.username'))
+    user_accounts = relationship(UserAccounts)
     
 class Teams(Base):
     __tablename__ = 'teams'
