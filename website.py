@@ -73,18 +73,17 @@ def dashboard():
 @app.route('/post_event/', methods=['GET', 'POST'])
 def postEvent():
     if request.method == 'POST':
-        event = Events(title=request.form['title'], type=request.form['type'], starts=request.form['starts'], ends=request.form['ends'], description=request.form['description'], contact=request.form['contact'], club=request.form['club'], post_date=datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"))
+        event = Events(title=request.form['title'], type=request.form['type'], starts=request.form['starts'], ends=request.form['ends'], description=request.form['description'], contact=request.form['contact'], club=request.form['club'], post_date=datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"), head=request.form['head'])
+        user = Session.query(UserAccounts).filter_by(username=event.head).one()
+        if not user.acc_type == 'master':
+            user.acc_type='event_head'
         Session.add(event)
+        Session.add(user)
         Session.commit()
         return redirect(url_for('eventInfo', event_id=event.id))
     else:
         users = Session.query(UserAccounts).all()
         return render_template('post_event.html', logged=session.get('username'), users=users)
-
-#@app.route('/my_events/')
-#def myEvents():
-#    events = Session.query(Events).all()
-#    return render_template('my_events.html', events=events)
     
 #@app.route('/post_list/', methods=['GET', 'POST'])
 #def postList():
@@ -112,6 +111,11 @@ def editProfile():
         return redirect(url_for('editProfile'))
     else:
         return render_template('edit_profile.html', logged=session.get('username'), profile=profile)
+    
+@app.route('/my_events/')
+def myEvents():
+    events = Session.query(Events).filter_by(head=session.get('username')).all()
+    return render_template('my_events.html', events=events)
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(12)
