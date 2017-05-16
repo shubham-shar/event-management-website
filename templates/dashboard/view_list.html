@@ -1,0 +1,33 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-horizontal" action="#" method="post">
+            <fieldset>
+                <div class="form-group">
+                    <label>List Items:</label>
+                    {% for item in items %}
+                    <div class="checkbox">
+                        <label>
+                            <input type="hidden" name="{{item.id}}" value="False">
+                            {% if item.done != True %}
+                            <input type="checkbox" name="{{item.id}}" value="True">{{item.item}}
+                            {% else %}
+                            <input type="checkbox" name="{{item.id}}" value="True" checked><del>{{item.item}}</del>
+                            {% endif %}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

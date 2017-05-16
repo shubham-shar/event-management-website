@@ -1,11 +1,12 @@
 {% extends "dashboard/base.html" %}
 {% block content %}
 <!-- Event -->
+<hr>
 {% for event in events %}
 <div class="row">
     <div class="col-md-7">
         <a href="#">
-            <img class="img-responsive" src="http://placehold.it/700x300" alt="">
+            <img class="img-responsive" src="{{ url_for('static', filename='uploads/' + event.id|string + '.jpg') }}" width="700" alt="">
         </a>
     </div>
     <div class="col-md-5">

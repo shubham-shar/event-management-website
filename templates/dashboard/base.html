@@ -44,69 +44,20 @@
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu message-dropdown">
-                        <li class="message-preview">
-                            <a href="#">
-                                <div class="media">
-                                    <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
-                                    <div class="media-body">
-                                        <h5 class="media-heading">
-                                            <strong>John Smith</strong>
-                                        </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="message-footer">
-                            <a href="#">Read All New Messages</a>
-                        </li>
-                    </ul>
-                </li>
-                {% if acc_type != 'master' %}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
-                        </li>
-                        <li>
-                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li>
-                {% endif %}
-                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{logged}} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
+                        {% if acc_type != 'master' %}
                         <li>
-                            <a href="{{url_for('editProfile')}}"><i class="fa fa-fw fa-user"></i> Profile</a>
+                            <a href="{{url_for('editProfile')}}"><i class="fa fa-fw fa-user"></i> Edit Profile</a>
                         </li>
+                        {% endif %}
+                        {% if acc_type == 'master' %}
                         <li>
                             <a href="{{url_for('inbox')}}"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
                         </li>
+                        {% endif %}
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Change Password</a>
+                            <a href="{{url_for('changePassword')}}"><i class="fa fa-fw fa-gear"></i> Password</a>
                         </li>
                         <li class="divider"></li>
                         <li>
@@ -118,126 +69,73 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    {% if request.path != url_for('inbox') and request.path != url_for('editProfile') %}
+                    {% if acc_type != 'master' %}
                     {% if request.path == url_for('dashboard') %}
                     <li class="active">
                         <a href="{{url_for('dashboard')}}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
-                    {% if acc_type == 'master' %}
-                    <li>
-                        <a href="{{url_for('postEvent')}}"><i class="fa fa-fw fa-bar-chart-o"></i> Post Event</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('permission')}}"><i class="fa fa-fw fa-edit"></i> Revoke Permissions</a>
-                    </li>
-                    {% endif %}
-                    {% if acc_type == 'eventhead' %}
-                    <li>
-                        <a href="{{url_for('sendMessage')}}"><i class="fa fa-fw fa-desktop"></i> Send Message</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('manageEvents')}}"><i class="fa fa-fw fa-wrench"></i> Manage Events</a>
-                    </li>
-                    {% endif %}
-                    {% elif request.path == url_for('postEvent') %}
-                    <li>
-                        <a href="{{url_for('dashboard')}}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
-                    </li>
-                    {% if acc_type == 'master' %}
-                    <li class="active">
-                        <a href="{{url_for('postEvent')}}"><i class="fa fa-fw fa-bar-chart-o"></i> Post Event</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('permission')}}"><i class="fa fa-fw fa-edit"></i> Revoke Permissions</a>
-                    </li>
-                    {% endif %}
-                    {% if acc_type == 'eventhead' %}
-                    <li>
-                        <a href="{{url_for('sendMessage')}}"><i class="fa fa-fw fa-desktop"></i> Send Message</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('manageEvents')}}"><i class="fa fa-fw fa-wrench"></i> Manage Events</a>
-                    </li>
-                    {% endif %}
-                    {% elif request.path == url_for('permission') %}
-                    <li>
-                        <a href="{{url_for('dashboard')}}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
-                    </li>
-                    {% if acc_type == 'master' %}
-                    <li>
-                        <a href="{{url_for('postEvent')}}"><i class="fa fa-fw fa-bar-chart-o"></i> Post Event</a>
-                    </li>
-                    <li class="active">
-                        <a href="{{url_for('permission')}}"><i class="fa fa-fw fa-edit"></i> Revoke Permissions</a>
-                    </li>
-                    {% endif %}
-                    {% if acc_type == 'eventhead' %}
-                    <li>
-                        <a href="{{url_for('sendMessage')}}"><i class="fa fa-fw fa-desktop"></i> Send Message</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('manageEvents')}}"><i class="fa fa-fw fa-wrench"></i> Manage Events</a>
-                    </li>
-                    {% endif %}
-                    {% elif request.path == url_for('sendMessage') %}
-                    <li>
-                        <a href="{{url_for('dashboard')}}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
-                    </li>
-                    {% if acc_type == 'master' %}
-                    <li>
-                        <a href="{{url_for('postEvent')}}"><i class="fa fa-fw fa-bar-chart-o"></i> Post Event</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('permission')}}"><i class="fa fa-fw fa-edit"></i> Revoke Permissions</a>
-                    </li>
-                    {% endif %}
-                    {% if acc_type == 'eventhead' %}
-                    <li class="active">
-                        <a href="{{url_for('sendMessage')}}"><i class="fa fa-fw fa-desktop"></i> Send Message</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('manageEvents')}}"><i class="fa fa-fw fa-wrench"></i> Manage Events</a>
-                    </li>
-                    {% endif %}
-                    {% elif request.path == url_for('manageEvents') or request.path == url_for('editEvent', event_id=event.id) or request.path == url_for('eventOptions', event_id=event.id) or request.path == url_for('createTeam', event_id=event.id) %}
-                    <li>
-                        <a href="{{url_for('dashboard')}}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
-                    </li>
-                    {% if acc_type == 'master' %}
-                    <li>
-                        <a href="{{url_for('postEvent')}}"><i class="fa fa-fw fa-bar-chart-o"></i> Post Event</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('permission')}}"><i class="fa fa-fw fa-edit"></i> Revoke Permissions</a>
-                    </li>
-                    {% endif %}
-                    {% if acc_type == 'eventhead' %}
-                    <li>
-                        <a href="{{url_for('sendMessage')}}"><i class="fa fa-fw fa-desktop"></i> Send Message</a>
-                    </li>
-                    <li class="active">
-                        <a href="{{url_for('manageEvents')}}"><i class="fa fa-fw fa-wrench"></i> Manage Events</a>
-                    </li>
-                    {% endif %}
-                    {% endif %}
                     {% else %}
                     <li>
                         <a href="{{url_for('dashboard')}}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
+                    {% endif %}
+                    {% endif %}
                     {% if acc_type == 'master' %}
+                    {% if request.path == url_for('postEvent') %}
+                    <li class="active">
+                        <a href="{{url_for('postEvent')}}"><i class="fa fa-fw fa-bar-chart-o"></i> Post Event</a>
+                    </li>
+                    {% else %}
                     <li>
                         <a href="{{url_for('postEvent')}}"><i class="fa fa-fw fa-bar-chart-o"></i> Post Event</a>
                     </li>
+                    {% endif %}
+                    {% if request.path == url_for('permission') %}
+                    <li class="active">
+                        <a href="{{url_for('permission')}}"><i class="fa fa-fw fa-edit"></i> Revoke Permissions</a>
+                    </li>
+                    {% else %}
                     <li>
                         <a href="{{url_for('permission')}}"><i class="fa fa-fw fa-edit"></i> Revoke Permissions</a>
                     </li>
                     {% endif %}
-                    {% if acc_type == 'eventhead' %}
+                    {% elif acc_type == 'eventhead' %}
+                    {% if request.path == url_for('sendMessage') %}
+                    <li class="active">
+                        <a href="{{url_for('sendMessage')}}"><i class="fa fa-fw fa-desktop"></i> Send Message</a>
+                    </li>
+                    {% else %}
                     <li>
                         <a href="{{url_for('sendMessage')}}"><i class="fa fa-fw fa-desktop"></i> Send Message</a>
                     </li>
+                    {% endif %}
+                    {% if request.path == url_for('manageEvents') %}
+                    <li class="active">
+                        <a href="{{url_for('manageEvents')}}"><i class="fa fa-fw fa-wrench"></i> Manage Events</a>
+                    </li>
+                    {% else %}
                     <li>
                         <a href="{{url_for('manageEvents')}}"><i class="fa fa-fw fa-wrench"></i> Manage Events</a>
+                    </li>
+                    {% endif %}
+                    {% elif acc_type == 'teamhead' %}
+                    {% if request.path == url_for('manageTeams') %}
+                    <li class="active">
+                        <a href="{{url_for('manageTeams')}}"><i class="fa fa-fw fa-wrench"></i> Manage Teams</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{{url_for('manageTeams')}}"><i class="fa fa-fw fa-wrench"></i> Manage Teams</a>
+                    </li>
+                    {% endif %}
+                    {% elif acc_type == 'member' %}
+                    {% if request.path == url_for('viewTeams') %}
+                    <li class="active">
+                        <a href="{{url_for('viewTeams')}}"><i class="fa fa-fw fa-wrench"></i> View Teams</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{{url_for('viewTeams')}}"><i class="fa fa-fw fa-wrench"></i> View Teams</a>
                     </li>
                     {% endif %}
                     {% endif %}

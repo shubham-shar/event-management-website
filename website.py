@@ -1,18 +1,32 @@
 import datetime
 import os
+import re
+import random
+from string import letters
 from flask import Flask, render_template, request, redirect, url_for, session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, UserAccounts, UserProfiles, Teams, ListItems
 from database_setup import Messages, TeamMembers, Events, Comments, TeamMessages
+from werkzeug import secure_filename
 
 app = Flask(__name__)
 
-engine = create_engine('sqlite:///event_database.db')
+engine = create_engine('sqlite:///event_database.sql')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 Session = DBSession()
+
+###############################################################################
+
+USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+def valid_username(username):
+    return username and USER_RE.match(username)
+
+PASS_RE = re.compile(r"^.{3,20}$")
+def valid_password(password):
+    return password and PASS_RE.match(password)
 
 ###############################################################################
 
@@ -27,6 +41,9 @@ def mainPage():
 @app.route('/<event_type>/')
 def eventList(event_type):
     events = Session.query(Events).filter_by(type=event_type).all()
+    events.reverse()
+    for event in events:
+        print type(event)
     return render_template('display/event_list.html', events=events,
                            event_type=event_type,
                            logged=session.get('username'))
@@ -49,8 +66,9 @@ def eventInfo(event_id):
     else:
         event = Session.query(Events).filter_by(id=event_id).one()
         comments = Session.query(Comments).filter_by(event_id=event_id).all()
+        head = Session.query(UserProfiles).filter_by(username=event.head).one()
         return render_template('display/event_info.html', event=event,
-                               comments=comments,
+                               comments=comments, head=head,
                                logged=session.get('username'))
     
 ###############################################################################
@@ -94,6 +112,27 @@ def signupPage():
         return redirect(url_for('error'))
     
 ###############################################################################
+
+@app.route('/change_password/', methods=['GET', 'POST'])
+def changePassword():
+    if session.get('username') != None:
+        if request.method == 'POST':
+            user = Session.query(UserAccounts).filter_by(username=session.get('username')).one()
+            if user.password==request.form['oldpassword'] and valid_password(request.form['newpassword']):
+                user.password = request.form['newpassword']
+                Session.add(user)
+                Session.commit()
+                return redirect(url_for('dashboard'))
+            else:
+                return redirect(url_for('error'))
+        else:
+            return render_template('dashboard/change_password.html',
+                                   logged=session.get('username'),
+                                   acc_type=session.get('acc_type'))
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
     
 @app.route('/login/', methods=['GET', 'POST'])
 def loginPage():
@@ -132,9 +171,13 @@ def logout():
 @app.route('/dashboard/')
 def dashboard():
     if session.get('username') != None:
-        return render_template('dashboard/dashboard.html',
-                               logged=session.get('username'),
-                               acc_type=session.get('acc_type'))
+        if session.get('acc_type') == 'master':
+            return redirect(url_for('postEvent'))
+        else:
+            user = Session.query(UserProfiles).filter_by(username=session.get('username')).one()
+            return render_template('dashboard/dashboard.html', user=user,
+                                   logged=session.get('username'),
+                                   acc_type=session.get('acc_type'))
     else:
         return redirect(url_for('error'))
     
@@ -149,16 +192,18 @@ def postEvent():
                            starts=request.form['starts'],
                            ends=request.form['ends'],
                            description=request.form['description'],
-                           contact=request.form['contact'],
                            club=request.form['club'],
                            post_date=datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),
                            head=request.form['head'])
             user = Session.query(UserAccounts).filter_by(username=event.head).one()
             if not user.acc_type == 'master':
-                user.acc_type='event_head'
+                user.acc_type='eventhead'
             Session.add(event)
             Session.add(user)
             Session.commit()
+            file = request.files['image']
+            filename = 'static/uploads/' + str(event.id) + '.jpg'
+            file.save(filename)
             return redirect(url_for('eventInfo', event_id=event.id))
         else:
             users = Session.query(UserAccounts).all()
@@ -167,7 +212,7 @@ def postEvent():
                                    acc_type=session.get('acc_type'))
     else:
         return redirect(url_for('error'))
-    
+
 ###############################################################################
     
 @app.route('/permission/', methods=['GET', 'POST'])
@@ -213,6 +258,18 @@ def editProfile():
         return redirect(url_for('error'))
     
 ###############################################################################
+
+@app.route('/view_profile/<username>')
+def viewProfile(username):
+    if session.get('username') != None:
+        user = Session.query(UserProfiles).filter_by(username=username).one()
+        return render_template('dashboard/view_profile.html', user=user,
+                               logged=session.get('username'),
+                               acc_type=session.get('acc_type'))
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
     
 @app.route('/manage_events/')
 def manageEvents():
@@ -251,6 +308,66 @@ def createTeam(event_id):
     
 ###############################################################################
 
+@app.route('/manage_teams/')
+def manageTeams():
+    if session.get('username') != None:
+        teams = Session.query(Teams).filter_by(team_head=session.get('username')).all()
+        return render_template('dashboard/manage_teams.html', teams=teams,
+                               logged=session.get('username'),
+                               acc_type=session.get('acc_type'))
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
+
+@app.route('/delete_team/<int:team_id>')
+def deleteTeam(team_id):
+    if session.get('username') != None:
+        team = Session.query(Teams).filter_by(id=team_id).one()
+        Session.delete(team)
+        Session.commit()
+        return redirect(url_for('manageTeams'))
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
+
+@app.route('/<int:team_id>/team_members/', methods=['GET', 'POST'])
+def teamMembers(team_id):
+    if session.get('username') != None:
+        if request.method == 'POST':
+            member = TeamMembers(team_id=team_id,
+                                 member=request.form['username'])
+            user = Session.query(UserAccounts).filter_by(username=request.form['username']).one()
+            user.acc_type = 'member'
+            Session.add(member)
+            Session.commit()
+            return redirect(url_for('teamMembers', team_id=team_id))
+        else:
+            users = Session.query(UserAccounts).all()
+            members = Session.query(TeamMembers).filter_by(team_id=team_id).all()
+            return render_template('dashboard/team_members.html',
+                                   logged=session.get('username'),
+                                   acc_type=session.get('acc_type'),
+                                   members=members, users=users)
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
+
+@app.route('/remove_member/<int:member_id>')
+def removeMember(member_id):
+    if session.get('username') != None:
+        member = Session.query(TeamMembers).filter_by(id=member_id).one()
+        team_id = member.team_id
+        Session.delete(member)
+        Session.commit()
+        return redirect(url_for('teamMembers', team_id=team_id))
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
+
 @app.route('/<int:event_id>/event_options/')
 def eventOptions(event_id):
     if session.get('username') != None:
@@ -267,6 +384,8 @@ def eventOptions(event_id):
 def deleteEvent(event_id):
     if session.get('username') != None:
         event = Session.query(Events).filter_by(id=event_id).one()
+        filename = 'static/uploads/' + str(event.id) + '.jpg'
+        os.remove(filename)
         Session.delete(event)
         Session.commit()
         return redirect(url_for('manageEvents'))
@@ -287,6 +406,10 @@ def editEvent(event_id):
             event.description=request.form['description']
             event.contact=request.form['contact']
             event.club=request.form['club']
+            if request.files['image']:
+                file = request.files['image']
+                filename = 'static/uploads/' + str(event.id) + '.jpg'
+                file.save(filename)
             Session.add(event)
             Session.commit()
             return redirect(url_for('eventOptions', event_id=event_id))
@@ -333,6 +456,126 @@ def inbox():
     else:
         return redirect(url_for('error'))
 
+###############################################################################
+
+@app.route('/delete_message/<int:message_id>')
+def deleteMessage(message_id):
+    if session.get('username') != None:
+        message = Session.query(Messages).filter_by(id=message_id).one()
+        Session.delete(message)
+        Session.commit()
+        return redirect(url_for('inbox'))
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
+
+@app.route('/<int:team_id>/team_list/', methods=['GET', 'POST'])
+def teamList(team_id):
+    if session.get('username') != None:
+        if request.method == 'POST':
+            item = ListItems(item=request.form['item'], team_id=team_id)
+            Session.add(item)
+            Session.commit()
+            return redirect(url_for('teamList', team_id=team_id))
+        else:
+            team = Session.query(Teams).filter_by(id=team_id).one()
+            items = Session.query(ListItems).filter_by(team_id=team_id).all()
+            return render_template('dashboard/team_list.html',
+                                   logged=session.get('username'),
+                                   acc_type=session.get('acc_type'),
+                                   items=items, team=team)
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
+
+@app.route('/delete_list_item/<int:item_id>')
+def deleteItem(item_id):
+    if session.get('username') != None:
+        item = Session.query(ListItems).filter_by(id=item_id).one()
+        team_id = item.team_id
+        Session.delete(item)
+        Session.commit()
+        return redirect(url_for('teamList', team_id=team_id))
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
+
+@app.route('/<int:team_id>/message/', methods=['GET', 'POST'])
+def teamMessage(team_id):
+    if session.get('username') != None:
+        if request.method == 'POST':
+            message = TeamMessages(title=request.form['title'],
+                                   message=request.form['message'],
+                                   team_id=team_id)
+            Session.add(message)
+            Session.commit()
+            return redirect(url_for('teamMessage', team_id=team_id))
+        else:
+            team = Session.query(Teams).filter_by(id=team_id).one()
+            return render_template('dashboard/team_message.html',
+                                   logged=session.get('username'),
+                                   acc_type=session.get('acc_type'),team=team)
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
+
+@app.route('/view_list/<int:team_id>', methods=['GET', 'POST'])
+def viewList(team_id):
+    if session.get('username') != None:
+        if request.method == 'POST':
+            print "hello1"
+            items = Session.query(ListItems).filter_by(team_id=team_id).all()
+            print "hello2"
+            for item in items:
+                print "hello3"
+                if request.form[str(item.id)]:
+                    item.done = request.form[str(item.id)]
+                    print item.done
+            print "hello5"
+            Session.add(items)
+            Session.commit()
+            return redirect(url_for('viewList', team_id=items[0].team_id))
+        else:
+            items = Session.query(ListItems).filter_by(team_id=team_id).all()
+            return render_template('dashboard/view_list.html', items=items,
+                                   logged=session.get('username'),
+                                   acc_type=session.get('acc_type'))
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
+
+@app.route('/view_teams/')
+def viewTeams():
+    if session.get('username') != None:
+        team_ids = Session.query(TeamMembers).filter_by(member=session.get('username')).all()
+        teams = []
+        for team_id in team_ids:
+            team = Session.query(Teams).filter_by(id=team_id.team_id).one()
+            teams.append(team)
+        return render_template('dashboard/view_teams.html', teams=teams,
+                               logged=session.get('username'),
+                               acc_type=session.get('acc_type'))
+    else:
+        return redirect(url_for('error'))
+
+###############################################################################
+
+@app.route('/<int:team_id>/view_members/')
+def viewMembers(team_id):
+    if session.get('username') != None:
+        members = Session.query(TeamMembers).filter_by(team_id=team_id).all()
+        return render_template('dashboard/view_members.html',
+                               logged=session.get('username'),
+                               acc_type=session.get('acc_type'),
+                               members=members)
+    else:
+        return redirect(url_for('error'))
+    
 ###############################################################################
 
 @app.route('/error/')

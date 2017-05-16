@@ -7,12 +7,13 @@
     <p class="lead">
         by <a href="#">{{event.club}}</a>
     </p>
+    <p>Event Head : <a href="{{url_for('viewProfile', username=event.head)}}">{{event.head}}</a></p>
     <hr>
     <!-- Date/Time -->
     <p><span class="glyphicon glyphicon-time"></span> Posted on {{event.post_date}}</p>
     <hr>
     <!-- Preview Image -->
-    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+    <img class="img-responsive" src="{{ url_for('static', filename='uploads/' + event.id|string + '.jpg') }}" alt="">
     <hr>
     <!-- Post Content -->
     <p>{{event.description}}</p>

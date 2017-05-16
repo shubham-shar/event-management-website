@@ -94,7 +94,7 @@
                 <hr>
 
                 <!-- Preview Image -->
-                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                <img class="img-responsive" src="{{ url_for('static', filename='uploads/' + event.id|string + '.jpg') }}" width="900" alt="">
 
                 <hr>
 
@@ -126,7 +126,7 @@
                     <div class="media-body">
                         <h4 class="media-heading">{{comment.username}}
                             <small>{{comment.post_date}}</small>
-                            | <a href="{{url_for('deleteComment',comment_id=comment.id)}}">delete</a>
+                            | <a href="{{url_for('deleteComment',comment_id=comment.id)}}"><small>delete</small></a>
                         </h4>
                         <p>{{comment.comment}}</p>
                     </div>
@@ -136,57 +136,11 @@
 
             <!-- Blog Sidebar Widgets Column -->
             <div class="col-md-4">
-
-                <!-- Blog Search Well -->
                 <div class="well">
-                    <h4>Blog Search</h4>
-                    <div class="input-group">
-                        <input type="text" class="form-control">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                        </span>
-                    </div>
-                    <!-- /.input-group -->
-                </div>
-
-                <!-- Blog Categories Well -->
-                <div class="well">
-                    <h4>Blog Categories</h4>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- /.row -->
-                </div>
-
-                <!-- Side Widget Well -->
-                <div class="well">
-                    <h4>Side Widget Well</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
+                    <h4>Event Head :</h4>
+                    <p>{{head.f_name}} {{head.l_name}}</p>
+                    <p>M.No. - {{head.mobile}}</p>
+                    <p>E-Mail - {{head.email}}</p>
                 </div>
 
             </div>
@@ -200,7 +154,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
+                    <p>Copyright &copy; Fester 2017</p>
                 </div>
             </div>
             <!-- /.row -->

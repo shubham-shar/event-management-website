@@ -25,7 +25,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label">Start Date:</label>  
                     <div class="col-md-4">
-                        <input name="starts" type="text" value="{{event.starts}}" class="form-control input-md" required="" placeholder="DD/MM/YYYY">
+                        <input name="starts" type="date" value="{{event.starts}}" class="form-control input-md" required="">
                     </div>
                 </div>
 
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label">End Date:</label>  
                     <div class="col-md-4">
-                        <input name="ends" type="text" value="{{event.ends}}" class="form-control input-md" required="" placeholder="DD/MM/YYYY">
+                        <input name="ends" type="date" value="{{event.ends}}" class="form-control input-md" required="">
                     </div>
                 </div>
 
@@ -145,6 +145,13 @@
                     </div>
                 </div>
                 {% endif %}
+                
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Upload Image:</label>  
+                    <div class="col-md-4">
+                        <input type="file" name="image" accept="image/jpeg">
+                    </div>
+                </div>
 
                 <!-- Button -->
                 <div class="row">
