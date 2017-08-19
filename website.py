@@ -18,17 +18,19 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 Session = DBSession()
 
-###############################################################################
-
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+
+
 def valid_username(username):
     return username and USER_RE.match(username)
 
+
 PASS_RE = re.compile(r"^.{3,20}$")
+
+
 def valid_password(password):
     return password and PASS_RE.match(password)
 
-###############################################################################
 
 @app.route('/')
 @app.route('/events/')
@@ -36,7 +38,6 @@ def mainPage():
     return render_template('display/main_page.html',
                            logged=session.get('username'))
 
-###############################################################################
 
 @app.route('/<event_type>/')
 def eventList(event_type):
@@ -48,7 +49,6 @@ def eventList(event_type):
                            event_type=event_type,
                            logged=session.get('username'))
 
-###############################################################################
 
 @app.route('/<int:event_id>/', methods=['GET', 'POST'])
 def eventInfo(event_id):
@@ -70,8 +70,7 @@ def eventInfo(event_id):
         return render_template('display/event_info.html', event=event,
                                comments=comments, head=head,
                                logged=session.get('username'))
-    
-###############################################################################
+
 
 @app.route('/<int:comment_id>/delete_comment/')
 def deleteComment(comment_id):
@@ -85,8 +84,7 @@ def deleteComment(comment_id):
     else:
         return redirect(url_for('error'))
 
-###############################################################################
-    
+
 @app.route('/signup/', methods=['GET', 'POST'])
 def signupPage():
     if session.get('username') == None:
@@ -110,15 +108,14 @@ def signupPage():
             return render_template('display/signup_page.html')
     else:
         return redirect(url_for('error'))
-    
-###############################################################################
+
 
 @app.route('/change_password/', methods=['GET', 'POST'])
 def changePassword():
     if session.get('username') != None:
         if request.method == 'POST':
             user = Session.query(UserAccounts).filter_by(username=session.get('username')).one()
-            if user.password==request.form['oldpassword'] and valid_password(request.form['newpassword']):
+            if user.password == request.form['oldpassword'] and valid_password(request.form['newpassword']):
                 user.password = request.form['newpassword']
                 Session.add(user)
                 Session.commit()
@@ -132,14 +129,13 @@ def changePassword():
     else:
         return redirect(url_for('error'))
 
-###############################################################################
-    
+
 @app.route('/login/', methods=['GET', 'POST'])
 def loginPage():
     if session.get('username') == None:
         if request.method == 'POST':
-            username=request.form['username']
-            password=request.form['password']
+            username = request.form['username']
+            password = request.form['password']
             users = Session.query(UserAccounts).all()
             for i in users:
                 if username == i.username and password == i.password:
@@ -154,9 +150,8 @@ def loginPage():
             return render_template('display/login_page.html')
     else:
         return redirect(url_for('error'))
-    
-###############################################################################
-    
+
+
 @app.route('/logout/')
 def logout():
     if session.get('username') != None:
@@ -166,7 +161,6 @@ def logout():
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/dashboard/')
 def dashboard():
@@ -180,8 +174,7 @@ def dashboard():
                                    acc_type=session.get('acc_type'))
     else:
         return redirect(url_for('error'))
-    
-###############################################################################
+
 
 @app.route('/post_event/', methods=['GET', 'POST'])
 def postEvent():
@@ -197,7 +190,7 @@ def postEvent():
                            head=request.form['head'])
             user = Session.query(UserAccounts).filter_by(username=event.head).one()
             if not user.acc_type == 'master':
-                user.acc_type='eventhead'
+                user.acc_type = 'eventhead'
             Session.add(event)
             Session.add(user)
             Session.commit()
@@ -213,8 +206,7 @@ def postEvent():
     else:
         return redirect(url_for('error'))
 
-###############################################################################
-    
+
 @app.route('/permission/', methods=['GET', 'POST'])
 def permission():
     if session.get('username') != None:
@@ -232,20 +224,19 @@ def permission():
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/edit_profile/', methods=['GET', 'POST'])
 def editProfile():
     if session.get('username') != None:
         profile = Session.query(UserProfiles).filter_by(username=session.get('username')).one()
         if request.method == 'POST':
-            profile.f_name=request.form['f_name']
-            profile.l_name=request.form['l_name']
-            profile.dob=request.form['dob']
-            profile.mobile=request.form['mobile']
-            profile.gender=request.form['gender']
-            profile.rollno=request.form['rollno']
-            profile.email=request.form['email']
+            profile.f_name = request.form['f_name']
+            profile.l_name = request.form['l_name']
+            profile.dob = request.form['dob']
+            profile.mobile = request.form['mobile']
+            profile.gender = request.form['gender']
+            profile.rollno = request.form['rollno']
+            profile.email = request.form['email']
             Session.add(profile)
             Session.commit()
             return redirect(url_for('editProfile'))
@@ -256,8 +247,7 @@ def editProfile():
                                    acc_type=session.get('acc_type'))
     else:
         return redirect(url_for('error'))
-    
-###############################################################################
+
 
 @app.route('/view_profile/<username>')
 def viewProfile(username):
@@ -269,8 +259,7 @@ def viewProfile(username):
     else:
         return redirect(url_for('error'))
 
-###############################################################################
-    
+
 @app.route('/manage_events/')
 def manageEvents():
     if session.get('username') != None:
@@ -280,14 +269,14 @@ def manageEvents():
                                acc_type=session.get('acc_type'))
     else:
         return redirect(url_for('error'))
-    
-###############################################################################
+
 
 @app.route('/<int:event_id>/create_team/', methods=['GET', 'POST'])
 def createTeam(event_id):
     if session.get('username') != None:
         if request.method == 'POST':
-            team_head = Session.query(UserAccounts).filter_by(username=request.form['team_head']).one()
+            team_head = Session.query(UserAccounts).filter_by(
+                username=request.form['team_head']).one()
             team_head.acc_type = 'teamhead'
             team = Teams(name=request.form['name'],
                          team_head=request.form['team_head'],
@@ -305,8 +294,7 @@ def createTeam(event_id):
                                    acc_type=session.get('acc_type'))
     else:
         return redirect(url_for('error'))
-    
-###############################################################################
+
 
 @app.route('/manage_teams/')
 def manageTeams():
@@ -318,7 +306,6 @@ def manageTeams():
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/delete_team/<int:team_id>')
 def deleteTeam(team_id):
@@ -330,7 +317,6 @@ def deleteTeam(team_id):
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/<int:team_id>/team_members/', methods=['GET', 'POST'])
 def teamMembers(team_id):
@@ -353,7 +339,6 @@ def teamMembers(team_id):
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/remove_member/<int:member_id>')
 def removeMember(member_id):
@@ -366,7 +351,6 @@ def removeMember(member_id):
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/<int:event_id>/event_options/')
 def eventOptions(event_id):
@@ -378,7 +362,6 @@ def eventOptions(event_id):
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/<int:event_id>/delete_event/')
 def deleteEvent(event_id):
@@ -392,20 +375,19 @@ def deleteEvent(event_id):
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/<int:event_id>/edit_event/', methods=['GET', 'POST'])
 def editEvent(event_id):
     if session.get('username') != None:
         event = Session.query(Events).filter_by(id=event_id).one()
         if request.method == 'POST':
-            event.title=request.form['title']
-            event.type=request.form['type']
-            event.starts=request.form['starts']
-            event.ends=request.form['ends']
-            event.description=request.form['description']
-            event.contact=request.form['contact']
-            event.club=request.form['club']
+            event.title = request.form['title']
+            event.type = request.form['type']
+            event.starts = request.form['starts']
+            event.ends = request.form['ends']
+            event.description = request.form['description']
+            event.contact = request.form['contact']
+            event.club = request.form['club']
             if request.files['image']:
                 file = request.files['image']
                 filename = 'static/uploads/' + str(event.id) + '.jpg'
@@ -420,8 +402,7 @@ def editEvent(event_id):
                                    acc_type=session.get('acc_type'))
     else:
         return redirect(url_for('error'))
-    
-###############################################################################
+
 
 @app.route('/send_message/', methods=['GET', 'POST'])
 def sendMessage():
@@ -443,7 +424,6 @@ def sendMessage():
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/inbox/')
 def inbox():
@@ -456,7 +436,6 @@ def inbox():
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/delete_message/<int:message_id>')
 def deleteMessage(message_id):
@@ -468,7 +447,6 @@ def deleteMessage(message_id):
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/<int:team_id>/team_list/', methods=['GET', 'POST'])
 def teamList(team_id):
@@ -488,7 +466,6 @@ def teamList(team_id):
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/delete_list_item/<int:item_id>')
 def deleteItem(item_id):
@@ -501,7 +478,6 @@ def deleteItem(item_id):
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/<int:team_id>/message/', methods=['GET', 'POST'])
 def teamMessage(team_id):
@@ -517,11 +493,10 @@ def teamMessage(team_id):
             team = Session.query(Teams).filter_by(id=team_id).one()
             return render_template('dashboard/team_message.html',
                                    logged=session.get('username'),
-                                   acc_type=session.get('acc_type'),team=team)
+                                   acc_type=session.get('acc_type'), team=team)
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/view_list/<int:team_id>', methods=['GET', 'POST'])
 def viewList(team_id):
@@ -547,7 +522,6 @@ def viewList(team_id):
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/view_teams/')
 def viewTeams():
@@ -563,7 +537,6 @@ def viewTeams():
     else:
         return redirect(url_for('error'))
 
-###############################################################################
 
 @app.route('/<int:team_id>/view_members/')
 def viewMembers(team_id):
@@ -575,14 +548,12 @@ def viewMembers(team_id):
                                members=members)
     else:
         return redirect(url_for('error'))
-    
-###############################################################################
+
 
 @app.route('/error/')
 def error():
     return render_template('error.html')
 
-###############################################################################
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(12)

@@ -14,7 +14,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    
+
     <!-- Custom Fonts -->
     <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
@@ -66,7 +66,7 @@
     <div class="container">
 
         <div class="row">
-            
+
             <form class="form-horizontal" action="#" method="post">
                 <fieldset>
 
@@ -76,10 +76,10 @@
                             <h2>Sign Up Form :</h2><br>
                         </div>
                     </div>
-                    
+
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="fn">Username:</label>  
+                        <label class="col-md-4 control-label" for="fn">Username:</label>
                         <div class="col-md-4">
                             <input name="username" type="text" class="form-control input-md" required="">
                         </div>
@@ -87,7 +87,7 @@
 
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Password:</label>  
+                        <label class="col-md-4 control-label">Password:</label>
                         <div class="col-md-4">
                             <input name="password" type="password" class="form-control input-md" required="">
                         </div>
@@ -95,7 +95,7 @@
 
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label">E-Mail:</label>  
+                        <label class="col-md-4 control-label">E-Mail:</label>
                         <div class="col-md-4">
                             <input name="email" type="email" class="form-control input-md" required="">
                         </div>
@@ -103,7 +103,7 @@
 
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label">First Name:</label>  
+                        <label class="col-md-4 control-label">First Name:</label>
                         <div class="col-md-4">
                             <input name="f_name" type="text" class="form-control input-md" required="">
                         </div>
@@ -111,7 +111,7 @@
 
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Last Name:</label>  
+                        <label class="col-md-4 control-label">Last Name:</label>
                         <div class="col-md-4">
                             <input name="l_name" type="text" class="form-control input-md" required="">
                         </div>
@@ -119,7 +119,7 @@
 
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Mobile No.:</label>  
+                        <label class="col-md-4 control-label">Mobile No.:</label>
                         <div class="col-md-4">
                             <input name="mobile" type="text" class="form-control input-md" required="">
                         </div>
@@ -127,7 +127,7 @@
 
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Date of Birth</label>  
+                        <label class="col-md-4 control-label">Date of Birth</label>
                         <div class="col-md-4">
                             <input name="dob" type="date" class="form-control input-md" required="">
                         </div>
@@ -135,7 +135,7 @@
 
                     <!-- Text input-->
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Roll No.:</label>  
+                        <label class="col-md-4 control-label">Roll No.:</label>
                         <div class="col-md-4">
                             <input name="rollno" type="text" class="form-control input-md" required="">
                         </div>
@@ -144,18 +144,18 @@
                     <!-- Multiple Radios (inline) -->
                     <div class="form-group">
                         <label class="col-md-4 control-label">Gender:</label>
-                        <div class="col-md-4"> 
+                        <div class="col-md-4">
                             <label class="radio-inline">
                                 <input type="radio" name="gender" value="M" checked="checked">
                             Male
-                            </label> 
+                            </label>
                             <label class="radio-inline">
                                 <input type="radio" name="gender" value="F">
                             Female
                             </label>
                         </div>
                     </div>
-                    
+
                     <!-- Button -->
                     <div class="row">
                         <div class="col-md-4"></div>
@@ -165,26 +165,26 @@
                     </div>
 
                     <br>
-                    
+
                     <div class="row">
                         <div class="col-md-4"></div>
                         <div class="col-md-4">
                             <h3>Already a Member:</h3>
                         </div>
                     </div>
-                    
+
                     <br>
-                    
+
                     <div class="row">
                         <div class="col-md-4"></div>
                         <div class="col-md-4">
                             <a class="btn btn-primary" href="{{url_for('loginPage')}}">Login</a>
                         </div>
                     </div>
-                    
+
                 </fieldset>
             </form>
-            
+
         </div>
         <!-- /.row -->
 

@@ -1,5 +1,4 @@
-{% extends "dashboard/base.html" %}
-{% block content %}
+{% extends "dashboard/base.html" %} {% block content %}
 <!-- Event -->
 {% for message in messages %}
 <div class="row">
@@ -8,9 +7,8 @@
         <p class="lead"><small>from</small> <a href="{{url_for('viewProfile', username=message.from_user)}}">{{message.from_user}}</a></p>
         <p>{{message.message}}</p>
         <a class="btn btn-primary" href="{{url_for('deleteMessage', message_id=message.id)}}">Delete</a>
-    </div>    
+    </div>
 </div>
 <hr>
 <!-- /.row -->
-{% endfor %}
-{% endblock %}
+{% endfor %} {% endblock %}

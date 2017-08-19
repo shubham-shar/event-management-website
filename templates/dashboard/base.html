@@ -14,7 +14,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    
+
     <!-- Fonts -->
     <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
@@ -50,8 +50,7 @@
                         <li>
                             <a href="{{url_for('editProfile')}}"><i class="fa fa-fw fa-user"></i> Edit Profile</a>
                         </li>
-                        {% endif %}
-                        {% if acc_type == 'master' %}
+                        {% endif %} {% if acc_type == 'master' %}
                         <li>
                             <a href="{{url_for('inbox')}}"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
                         </li>
@@ -69,8 +68,7 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    {% if acc_type != 'master' %}
-                    {% if request.path == url_for('dashboard') %}
+                    {% if acc_type != 'master' %} {% if request.path == url_for('dashboard') %}
                     <li class="active">
                         <a href="{{url_for('dashboard')}}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
@@ -78,10 +76,7 @@
                     <li>
                         <a href="{{url_for('dashboard')}}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
-                    {% endif %}
-                    {% endif %}
-                    {% if acc_type == 'master' %}
-                    {% if request.path == url_for('postEvent') %}
+                    {% endif %} {% endif %} {% if acc_type == 'master' %} {% if request.path == url_for('postEvent') %}
                     <li class="active">
                         <a href="{{url_for('postEvent')}}"><i class="fa fa-fw fa-bar-chart-o"></i> Post Event</a>
                     </li>
@@ -89,8 +84,7 @@
                     <li>
                         <a href="{{url_for('postEvent')}}"><i class="fa fa-fw fa-bar-chart-o"></i> Post Event</a>
                     </li>
-                    {% endif %}
-                    {% if request.path == url_for('permission') %}
+                    {% endif %} {% if request.path == url_for('permission') %}
                     <li class="active">
                         <a href="{{url_for('permission')}}"><i class="fa fa-fw fa-edit"></i> Revoke Permissions</a>
                     </li>
@@ -98,9 +92,7 @@
                     <li>
                         <a href="{{url_for('permission')}}"><i class="fa fa-fw fa-edit"></i> Revoke Permissions</a>
                     </li>
-                    {% endif %}
-                    {% elif acc_type == 'eventhead' %}
-                    {% if request.path == url_for('sendMessage') %}
+                    {% endif %} {% elif acc_type == 'eventhead' %} {% if request.path == url_for('sendMessage') %}
                     <li class="active">
                         <a href="{{url_for('sendMessage')}}"><i class="fa fa-fw fa-desktop"></i> Send Message</a>
                     </li>
@@ -108,8 +100,7 @@
                     <li>
                         <a href="{{url_for('sendMessage')}}"><i class="fa fa-fw fa-desktop"></i> Send Message</a>
                     </li>
-                    {% endif %}
-                    {% if request.path == url_for('manageEvents') %}
+                    {% endif %} {% if request.path == url_for('manageEvents') %}
                     <li class="active">
                         <a href="{{url_for('manageEvents')}}"><i class="fa fa-fw fa-wrench"></i> Manage Events</a>
                     </li>
@@ -117,9 +108,7 @@
                     <li>
                         <a href="{{url_for('manageEvents')}}"><i class="fa fa-fw fa-wrench"></i> Manage Events</a>
                     </li>
-                    {% endif %}
-                    {% elif acc_type == 'teamhead' %}
-                    {% if request.path == url_for('manageTeams') %}
+                    {% endif %} {% elif acc_type == 'teamhead' %} {% if request.path == url_for('manageTeams') %}
                     <li class="active">
                         <a href="{{url_for('manageTeams')}}"><i class="fa fa-fw fa-wrench"></i> Manage Teams</a>
                     </li>
@@ -127,9 +116,7 @@
                     <li>
                         <a href="{{url_for('manageTeams')}}"><i class="fa fa-fw fa-wrench"></i> Manage Teams</a>
                     </li>
-                    {% endif %}
-                    {% elif acc_type == 'member' %}
-                    {% if request.path == url_for('viewTeams') %}
+                    {% endif %} {% elif acc_type == 'member' %} {% if request.path == url_for('viewTeams') %}
                     <li class="active">
                         <a href="{{url_for('viewTeams')}}"><i class="fa fa-fw fa-wrench"></i> View Teams</a>
                     </li>
@@ -137,8 +124,7 @@
                     <li>
                         <a href="{{url_for('viewTeams')}}"><i class="fa fa-fw fa-wrench"></i> View Teams</a>
                     </li>
-                    {% endif %}
-                    {% endif %}
+                    {% endif %} {% endif %}
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -147,8 +133,7 @@
         <div id="page-wrapper">
 
             <div class="container-fluid">
-                {% block content %}
-                {% endblock %}
+                {% block content %} {% endblock %}
             </div>
             <!-- /.container-fluid -->
 

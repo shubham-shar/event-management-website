@@ -1,8 +1,6 @@
-{% extends "dashboard/base.html" %}
-{% block content %}
+{% extends "dashboard/base.html" %} {% block content %}
 <!-- Event -->
-<hr>
-{% for event in events %}
+<hr> {% for event in events %}
 <div class="row">
     <div class="col-md-7">
         <a href="#">
@@ -13,9 +11,8 @@
         <h3>{{event.title}}</h3>
         <p>{{event.description}}</p>
         <a class="btn btn-primary" href="{{url_for('eventOptions', event_id=event.id)}}">Manage<span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div>    
+    </div>
 </div>
 <hr>
 <!-- /.row -->
-{% endfor %}
-{% endblock %}
+{% endfor %} {% endblock %}
