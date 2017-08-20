@@ -18,7 +18,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 Session = DBSession()
 
-USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+USER_RE = re.compile(r"^(?![-._])(?!.*[_.-]{2})[\w.-]{6,30}(?<![-._])$")
 
 
 def valid_username(username):
@@ -53,7 +53,7 @@ def eventList(event_type):
 @app.route('/<int:event_id>/', methods=['GET', 'POST'])
 def eventInfo(event_id):
     if request.method == 'POST':
-        if session.get('username') == None:
+        if session.get('username') is None:
             return redirect(url_for('loginPage'))
         else:
             add_comment = Comments(comment=request.form['add_comment'],
@@ -74,7 +74,7 @@ def eventInfo(event_id):
 
 @app.route('/<int:comment_id>/delete_comment/')
 def deleteComment(comment_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         comment = Session.query(Comments).filter_by(id=comment_id).one()
         event_id = comment.event_id
         if session.get('username') == comment.username or session.get('acc_type') == 'master':
@@ -87,7 +87,7 @@ def deleteComment(comment_id):
 
 @app.route('/signup/', methods=['GET', 'POST'])
 def signupPage():
-    if session.get('username') == None:
+    if session.get('username') is None:
         if request.method == 'POST':
             user = UserAccounts(username=request.form['username'],
                                 password=request.form['password'])
@@ -112,7 +112,7 @@ def signupPage():
 
 @app.route('/change_password/', methods=['GET', 'POST'])
 def changePassword():
-    if session.get('username') != None:
+    if session.get('username') is not None:
         if request.method == 'POST':
             user = Session.query(UserAccounts).filter_by(username=session.get('username')).one()
             if user.password == request.form['oldpassword'] and valid_password(request.form['newpassword']):
@@ -132,7 +132,7 @@ def changePassword():
 
 @app.route('/login/', methods=['GET', 'POST'])
 def loginPage():
-    if session.get('username') == None:
+    if session.get('username') is None:
         if request.method == 'POST':
             username = request.form['username']
             password = request.form['password']
@@ -154,7 +154,7 @@ def loginPage():
 
 @app.route('/logout/')
 def logout():
-    if session.get('username') != None:
+    if session.get('username') is not None:
         session['username'] = None
         session['acc_type'] = None
         return redirect(url_for('mainPage'))
@@ -164,7 +164,7 @@ def logout():
 
 @app.route('/dashboard/')
 def dashboard():
-    if session.get('username') != None:
+    if session.get('username') is not None:
         if session.get('acc_type') == 'master':
             return redirect(url_for('postEvent'))
         else:
@@ -178,7 +178,7 @@ def dashboard():
 
 @app.route('/post_event/', methods=['GET', 'POST'])
 def postEvent():
-    if session.get('username') != None:
+    if session.get('username') is not None:
         if request.method == 'POST':
             event = Events(title=request.form['title'],
                            type=request.form['type'],
@@ -209,7 +209,7 @@ def postEvent():
 
 @app.route('/permission/', methods=['GET', 'POST'])
 def permission():
-    if session.get('username') != None:
+    if session.get('username') is not None:
         if request.method == 'POST':
             user = Session.query(UserAccounts).filter_by(username=request.form['username']).one()
             user.acc_type = "default"
@@ -227,7 +227,7 @@ def permission():
 
 @app.route('/edit_profile/', methods=['GET', 'POST'])
 def editProfile():
-    if session.get('username') != None:
+    if session.get('username') is not None:
         profile = Session.query(UserProfiles).filter_by(username=session.get('username')).one()
         if request.method == 'POST':
             profile.f_name = request.form['f_name']
@@ -251,7 +251,7 @@ def editProfile():
 
 @app.route('/view_profile/<username>')
 def viewProfile(username):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         user = Session.query(UserProfiles).filter_by(username=username).one()
         return render_template('dashboard/view_profile.html', user=user,
                                logged=session.get('username'),
@@ -262,7 +262,7 @@ def viewProfile(username):
 
 @app.route('/manage_events/')
 def manageEvents():
-    if session.get('username') != None:
+    if session.get('username') is not None:
         events = Session.query(Events).filter_by(head=session.get('username')).all()
         return render_template('dashboard/manage_events.html', events=events,
                                logged=session.get('username'),
@@ -273,7 +273,7 @@ def manageEvents():
 
 @app.route('/<int:event_id>/create_team/', methods=['GET', 'POST'])
 def createTeam(event_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         if request.method == 'POST':
             team_head = Session.query(UserAccounts).filter_by(
                 username=request.form['team_head']).one()
@@ -298,7 +298,7 @@ def createTeam(event_id):
 
 @app.route('/manage_teams/')
 def manageTeams():
-    if session.get('username') != None:
+    if session.get('username') is not None:
         teams = Session.query(Teams).filter_by(team_head=session.get('username')).all()
         return render_template('dashboard/manage_teams.html', teams=teams,
                                logged=session.get('username'),
@@ -309,7 +309,7 @@ def manageTeams():
 
 @app.route('/delete_team/<int:team_id>')
 def deleteTeam(team_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         team = Session.query(Teams).filter_by(id=team_id).one()
         Session.delete(team)
         Session.commit()
@@ -320,7 +320,7 @@ def deleteTeam(team_id):
 
 @app.route('/<int:team_id>/team_members/', methods=['GET', 'POST'])
 def teamMembers(team_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         if request.method == 'POST':
             member = TeamMembers(team_id=team_id,
                                  member=request.form['username'])
@@ -342,7 +342,7 @@ def teamMembers(team_id):
 
 @app.route('/remove_member/<int:member_id>')
 def removeMember(member_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         member = Session.query(TeamMembers).filter_by(id=member_id).one()
         team_id = member.team_id
         Session.delete(member)
@@ -354,7 +354,7 @@ def removeMember(member_id):
 
 @app.route('/<int:event_id>/event_options/')
 def eventOptions(event_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         event = Session.query(Events).filter_by(id=event_id).one()
         return render_template('dashboard/event_options.html',
                                logged=session.get('username'), event=event,
@@ -365,7 +365,7 @@ def eventOptions(event_id):
 
 @app.route('/<int:event_id>/delete_event/')
 def deleteEvent(event_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         event = Session.query(Events).filter_by(id=event_id).one()
         filename = 'static/uploads/' + str(event.id) + '.jpg'
         os.remove(filename)
@@ -378,7 +378,7 @@ def deleteEvent(event_id):
 
 @app.route('/<int:event_id>/edit_event/', methods=['GET', 'POST'])
 def editEvent(event_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         event = Session.query(Events).filter_by(id=event_id).one()
         if request.method == 'POST':
             event.title = request.form['title']
@@ -406,7 +406,7 @@ def editEvent(event_id):
 
 @app.route('/send_message/', methods=['GET', 'POST'])
 def sendMessage():
-    if session.get('username') != None:
+    if session.get('username') is not None:
         if request.method == 'POST':
             message = Messages(title=request.form['title'],
                                message=request.form['message'],
@@ -427,7 +427,7 @@ def sendMessage():
 
 @app.route('/inbox/')
 def inbox():
-    if session.get('username') != None:
+    if session.get('username') is not None:
         messages = Session.query(Messages).filter_by(username=session.get('username')).all()
         return render_template('dashboard/inbox.html',
                                logged=session.get('username'),
@@ -439,7 +439,7 @@ def inbox():
 
 @app.route('/delete_message/<int:message_id>')
 def deleteMessage(message_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         message = Session.query(Messages).filter_by(id=message_id).one()
         Session.delete(message)
         Session.commit()
@@ -450,7 +450,7 @@ def deleteMessage(message_id):
 
 @app.route('/<int:team_id>/team_list/', methods=['GET', 'POST'])
 def teamList(team_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         if request.method == 'POST':
             item = ListItems(item=request.form['item'], team_id=team_id)
             Session.add(item)
@@ -469,7 +469,7 @@ def teamList(team_id):
 
 @app.route('/delete_list_item/<int:item_id>')
 def deleteItem(item_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         item = Session.query(ListItems).filter_by(id=item_id).one()
         team_id = item.team_id
         Session.delete(item)
@@ -481,7 +481,7 @@ def deleteItem(item_id):
 
 @app.route('/<int:team_id>/message/', methods=['GET', 'POST'])
 def teamMessage(team_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         if request.method == 'POST':
             message = TeamMessages(title=request.form['title'],
                                    message=request.form['message'],
@@ -500,7 +500,7 @@ def teamMessage(team_id):
 
 @app.route('/view_list/<int:team_id>', methods=['GET', 'POST'])
 def viewList(team_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         if request.method == 'POST':
             print "hello1"
             items = Session.query(ListItems).filter_by(team_id=team_id).all()
@@ -525,7 +525,7 @@ def viewList(team_id):
 
 @app.route('/view_teams/')
 def viewTeams():
-    if session.get('username') != None:
+    if session.get('username') is not None:
         team_ids = Session.query(TeamMembers).filter_by(member=session.get('username')).all()
         teams = []
         for team_id in team_ids:
@@ -540,7 +540,7 @@ def viewTeams():
 
 @app.route('/<int:team_id>/view_members/')
 def viewMembers(team_id):
-    if session.get('username') != None:
+    if session.get('username') is not None:
         members = Session.query(TeamMembers).filter_by(team_id=team_id).all()
         return render_template('dashboard/view_members.html',
                                logged=session.get('username'),
