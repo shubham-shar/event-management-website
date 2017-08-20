@@ -95,7 +95,8 @@ class Comments(Base):
     comment = Column(Text)
     event_id = Column(Integer, ForeignKey('events.id'))
     events = relationship(Events)
-    username = Column(String(80), ForeignKey('user_accounts.username'), nullable=False)
+    username = Column(String(80), ForeignKey(
+        'user_accounts.username'), nullable=False)
     user_accounts = relationship(UserAccounts)
     post_date = Column(String(20), nullable=False)
 

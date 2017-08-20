@@ -1,14 +1,11 @@
 import datetime
 import os
 import re
-import random
-from string import letters
 from flask import Flask, render_template, request, redirect, url_for, session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, UserAccounts, UserProfiles, Teams, ListItems
 from database_setup import Messages, TeamMembers, Events, Comments, TeamMessages
-from werkzeug import secure_filename
 
 app = Flask(__name__)
 
@@ -114,7 +111,8 @@ def signupPage():
 def changePassword():
     if session.get('username') is not None:
         if request.method == 'POST':
-            user = Session.query(UserAccounts).filter_by(username=session.get('username')).one()
+            user = Session.query(UserAccounts).filter_by(
+                username=session.get('username')).one()
             if user.password == request.form['oldpassword'] and valid_password(request.form['newpassword']):
                 user.password = request.form['newpassword']
                 Session.add(user)
@@ -168,7 +166,8 @@ def dashboard():
         if session.get('acc_type') == 'master':
             return redirect(url_for('postEvent'))
         else:
-            user = Session.query(UserProfiles).filter_by(username=session.get('username')).one()
+            user = Session.query(UserProfiles).filter_by(
+                username=session.get('username')).one()
             return render_template('dashboard/dashboard.html', user=user,
                                    logged=session.get('username'),
                                    acc_type=session.get('acc_type'))
@@ -188,15 +187,16 @@ def postEvent():
                            club=request.form['club'],
                            post_date=datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),
                            head=request.form['head'])
-            user = Session.query(UserAccounts).filter_by(username=event.head).one()
+            user = Session.query(UserAccounts).filter_by(
+                username=event.head).one()
             if not user.acc_type == 'master':
                 user.acc_type = 'eventhead'
             Session.add(event)
             Session.add(user)
             Session.commit()
-            file = request.files['image']
+            ufile = request.files['image']
             filename = 'static/uploads/' + str(event.id) + '.jpg'
-            file.save(filename)
+            ufile.save(filename)
             return redirect(url_for('eventInfo', event_id=event.id))
         else:
             users = Session.query(UserAccounts).all()
@@ -211,7 +211,8 @@ def postEvent():
 def permission():
     if session.get('username') is not None:
         if request.method == 'POST':
-            user = Session.query(UserAccounts).filter_by(username=request.form['username']).one()
+            user = Session.query(UserAccounts).filter_by(
+                username=request.form['username']).one()
             user.acc_type = "default"
             Session.add(user)
             Session.commit()
@@ -228,7 +229,8 @@ def permission():
 @app.route('/edit_profile/', methods=['GET', 'POST'])
 def editProfile():
     if session.get('username') is not None:
-        profile = Session.query(UserProfiles).filter_by(username=session.get('username')).one()
+        profile = Session.query(UserProfiles).filter_by(
+            username=session.get('username')).one()
         if request.method == 'POST':
             profile.f_name = request.form['f_name']
             profile.l_name = request.form['l_name']
@@ -263,7 +265,8 @@ def viewProfile(username):
 @app.route('/manage_events/')
 def manageEvents():
     if session.get('username') is not None:
-        events = Session.query(Events).filter_by(head=session.get('username')).all()
+        events = Session.query(Events).filter_by(
+            head=session.get('username')).all()
         return render_template('dashboard/manage_events.html', events=events,
                                logged=session.get('username'),
                                acc_type=session.get('acc_type'))
@@ -299,7 +302,8 @@ def createTeam(event_id):
 @app.route('/manage_teams/')
 def manageTeams():
     if session.get('username') is not None:
-        teams = Session.query(Teams).filter_by(team_head=session.get('username')).all()
+        teams = Session.query(Teams).filter_by(
+            team_head=session.get('username')).all()
         return render_template('dashboard/manage_teams.html', teams=teams,
                                logged=session.get('username'),
                                acc_type=session.get('acc_type'))
@@ -324,14 +328,16 @@ def teamMembers(team_id):
         if request.method == 'POST':
             member = TeamMembers(team_id=team_id,
                                  member=request.form['username'])
-            user = Session.query(UserAccounts).filter_by(username=request.form['username']).one()
+            user = Session.query(UserAccounts).filter_by(
+                username=request.form['username']).one()
             user.acc_type = 'member'
             Session.add(member)
             Session.commit()
             return redirect(url_for('teamMembers', team_id=team_id))
         else:
             users = Session.query(UserAccounts).all()
-            members = Session.query(TeamMembers).filter_by(team_id=team_id).all()
+            members = Session.query(TeamMembers).filter_by(
+                team_id=team_id).all()
             return render_template('dashboard/team_members.html',
                                    logged=session.get('username'),
                                    acc_type=session.get('acc_type'),
@@ -389,9 +395,9 @@ def editEvent(event_id):
             event.contact = request.form['contact']
             event.club = request.form['club']
             if request.files['image']:
-                file = request.files['image']
+                ufile = request.files['image']
                 filename = 'static/uploads/' + str(event.id) + '.jpg'
-                file.save(filename)
+                ufile.save(filename)
             Session.add(event)
             Session.commit()
             return redirect(url_for('eventOptions', event_id=event_id))
@@ -417,7 +423,8 @@ def sendMessage():
             Session.commit()
             return redirect(url_for('sendMessage'))
         else:
-            users = Session.query(UserAccounts).filter_by(acc_type='master').all()
+            users = Session.query(UserAccounts).filter_by(
+                acc_type='master').all()
             return render_template('dashboard/message.html',
                                    logged=session.get('username'), users=users,
                                    acc_type=session.get('acc_type'))
@@ -428,7 +435,8 @@ def sendMessage():
 @app.route('/inbox/')
 def inbox():
     if session.get('username') is not None:
-        messages = Session.query(Messages).filter_by(username=session.get('username')).all()
+        messages = Session.query(Messages).filter_by(
+            username=session.get('username')).all()
         return render_template('dashboard/inbox.html',
                                logged=session.get('username'),
                                messages=messages,
@@ -526,7 +534,8 @@ def viewList(team_id):
 @app.route('/view_teams/')
 def viewTeams():
     if session.get('username') is not None:
-        team_ids = Session.query(TeamMembers).filter_by(member=session.get('username')).all()
+        team_ids = Session.query(TeamMembers).filter_by(
+            member=session.get('username')).all()
         teams = []
         for team_id in team_ids:
             team = Session.query(Teams).filter_by(id=team_id.team_id).one()
