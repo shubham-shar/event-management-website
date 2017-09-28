@@ -12,12 +12,6 @@ DBSession = sessionmaker(bind=engine)
 
 session = DBSession()
 
-user = UserAccounts(username="root",
-                    password="root",
-                    acc_type="master")
-session.add(user)
-session.commit()
-
 user = UserAccounts(username="johndoe1",
                     password="johndoe1")
 profile = UserProfiles(f_name="John",
