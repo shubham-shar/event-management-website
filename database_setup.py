@@ -9,7 +9,7 @@ Base = declarative_base()
 class UserAccounts(Base):
     __tablename__ = 'user_accounts'
 
-	username = Column(String(80), primary_key=True)
+    username = Column(String(80), primary_key=True)
     password = Column(String(80), nullable=False)
     acc_type = Column(String(10), default="default")
 
