@@ -9,6 +9,11 @@ body {
     }
 }
 
+.error {
+    text-align: center;
+    color: #f5220d;
+}
+
 #wrapper {
     padding-left: 0;
 }

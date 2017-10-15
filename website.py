@@ -79,7 +79,7 @@ def deleteComment(comment_id):
             Session.commit()
         return redirect(url_for('eventInfo', event_id=event_id))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/signup/', methods=['GET', 'POST'])
@@ -104,7 +104,7 @@ def signupPage():
         else:
             return render_template('display/signup_page.html')
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/change_password/', methods=['GET', 'POST'])
@@ -119,13 +119,13 @@ def changePassword():
                 Session.commit()
                 return redirect(url_for('dashboard'))
             else:
-                return redirect(url_for('error'))
+                return redirect(url_for('not_found'))
         else:
             return render_template('dashboard/change_password.html',
                                    logged=session.get('username'),
                                    acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -147,7 +147,7 @@ def loginPage():
         else:
             return render_template('display/login_page.html')
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/logout/')
@@ -157,7 +157,7 @@ def logout():
         session['acc_type'] = None
         return redirect(url_for('mainPage'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/dashboard/')
@@ -172,7 +172,7 @@ def dashboard():
                                    logged=session.get('username'),
                                    acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/post_event/', methods=['GET', 'POST'])
@@ -204,7 +204,7 @@ def postEvent():
                                    logged=session.get('username'), users=users,
                                    acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/permission/', methods=['GET', 'POST'])
@@ -223,7 +223,7 @@ def permission():
                                    users=users, logged=session.get('username'),
                                    acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/edit_profile/', methods=['GET', 'POST'])
@@ -248,7 +248,7 @@ def editProfile():
                                    profile=profile,
                                    acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/view_profile/<username>')
@@ -259,7 +259,7 @@ def viewProfile(username):
                                logged=session.get('username'),
                                acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/manage_events/')
@@ -271,7 +271,7 @@ def manageEvents():
                                logged=session.get('username'),
                                acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/<int:event_id>/create_team/', methods=['GET', 'POST'])
@@ -296,7 +296,7 @@ def createTeam(event_id):
                                    event=event,
                                    acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/manage_teams/')
@@ -308,7 +308,7 @@ def manageTeams():
                                logged=session.get('username'),
                                acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/delete_team/<int:team_id>')
@@ -319,7 +319,7 @@ def deleteTeam(team_id):
         Session.commit()
         return redirect(url_for('manageTeams'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/<int:team_id>/team_members/', methods=['GET', 'POST'])
@@ -343,7 +343,7 @@ def teamMembers(team_id):
                                    acc_type=session.get('acc_type'),
                                    members=members, users=users)
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/remove_member/<int:member_id>')
@@ -355,7 +355,7 @@ def removeMember(member_id):
         Session.commit()
         return redirect(url_for('teamMembers', team_id=team_id))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/<int:event_id>/event_options/')
@@ -366,7 +366,7 @@ def eventOptions(event_id):
                                logged=session.get('username'), event=event,
                                acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/<int:event_id>/delete_event/')
@@ -379,7 +379,7 @@ def deleteEvent(event_id):
         Session.commit()
         return redirect(url_for('manageEvents'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/<int:event_id>/edit_event/', methods=['GET', 'POST'])
@@ -407,7 +407,7 @@ def editEvent(event_id):
                                    event=event,
                                    acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/send_message/', methods=['GET', 'POST'])
@@ -429,7 +429,7 @@ def sendMessage():
                                    logged=session.get('username'), users=users,
                                    acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/inbox/')
@@ -442,7 +442,7 @@ def inbox():
                                messages=messages,
                                acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/delete_message/<int:message_id>')
@@ -453,7 +453,7 @@ def deleteMessage(message_id):
         Session.commit()
         return redirect(url_for('inbox'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/<int:team_id>/team_list/', methods=['GET', 'POST'])
@@ -472,7 +472,7 @@ def teamList(team_id):
                                    acc_type=session.get('acc_type'),
                                    items=items, team=team)
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/delete_list_item/<int:item_id>')
@@ -484,7 +484,7 @@ def deleteItem(item_id):
         Session.commit()
         return redirect(url_for('teamList', team_id=team_id))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/<int:team_id>/message/', methods=['GET', 'POST'])
@@ -503,7 +503,7 @@ def teamMessage(team_id):
                                    logged=session.get('username'),
                                    acc_type=session.get('acc_type'), team=team)
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/view_list/<int:team_id>', methods=['GET', 'POST'])
@@ -528,7 +528,7 @@ def viewList(team_id):
                                    logged=session.get('username'),
                                    acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/view_teams/')
@@ -544,7 +544,7 @@ def viewTeams():
                                logged=session.get('username'),
                                acc_type=session.get('acc_type'))
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
 @app.route('/<int:team_id>/view_members/')
@@ -556,12 +556,12 @@ def viewMembers(team_id):
                                acc_type=session.get('acc_type'),
                                members=members)
     else:
-        return redirect(url_for('error'))
+        return redirect(url_for('not_found'))
 
 
-@app.route('/error/')
-def error():
-    return render_template('error.html')
+@app.route('/not_found/')
+def not_found():
+    return render_template('not_found.html')
 
 
 if __name__ == '__main__':
