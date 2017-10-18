@@ -8,11 +8,11 @@
                     <label>List Items:</label> {% for item in items %}
                     <div class="checkbox">
                         <label>
-                            <input type="hidden" name="{{item.id}}" value="False">
+                            <input type="hidden" name="{{item.id}}" value={{0}}>
                             {% if item.done != True %}
-                            <input type="checkbox" name="{{item.id}}" value="True">{{item.item}}
+                            <input type="checkbox" name="{{item.id}}" value={{1}}>{{item.item}}
                             {% else %}
-                            <input type="checkbox" name="{{item.id}}" value="True" checked><del>{{item.item}}</del>
+                            <input type="checkbox" name="{{item.id}}" value={{1}} checked><del>{{item.item}}</del>
                             {% endif %}
                         </label>
                     </div>

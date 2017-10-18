@@ -514,13 +514,14 @@ def viewList(team_id):
             items = Session.query(ListItems).filter_by(team_id=team_id).all()
             print "hello2"
             for item in items:
-                print "hello3"
+                print type(item.done)
                 if request.form[str(item.id)]:
-                    item.done = request.form[str(item.id)]
+                    print type(request.form[str(item.id)])
+                    item.done = bool(request.form[str(item.id)])
                     print item.done
+                    Session.add(item)
+                    Session.commit()
             print "hello5"
-            Session.add(items)
-            Session.commit()
             return redirect(url_for('viewList', team_id=items[0].team_id))
         else:
             items = Session.query(ListItems).filter_by(team_id=team_id).all()
