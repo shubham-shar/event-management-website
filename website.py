@@ -506,28 +506,37 @@ def teamMessage(team_id):
         return redirect(url_for('not_found'))
 
 
-@app.route('/view_list/<int:team_id>', methods=['GET', 'POST'])
+@app.route('/view_list/<int:team_id>')
 def viewList(team_id):
     if session.get('username') is not None:
-        if request.method == 'POST':
-            print "hello1"
-            items = Session.query(ListItems).filter_by(team_id=team_id).all()
-            print "hello2"
-            for item in items:
-                print type(item.done)
-                if request.form[str(item.id)]:
-                    print type(request.form[str(item.id)])
-                    item.done = bool(request.form[str(item.id)])
-                    print item.done
-                    Session.add(item)
-                    Session.commit()
-            print "hello5"
-            return redirect(url_for('viewList', team_id=items[0].team_id))
-        else:
-            items = Session.query(ListItems).filter_by(team_id=team_id).all()
-            return render_template('dashboard/view_list.html', items=items,
-                                   logged=session.get('username'),
-                                   acc_type=session.get('acc_type'))
+        items = Session.query(ListItems).filter_by(team_id=team_id).all()
+        return render_template('dashboard/view_list.html', items=items,
+                               logged=session.get('username'),
+                               acc_type=session.get('acc_type'))
+    else:
+        return redirect(url_for('not_found'))
+
+
+@app.route('/done_item/<int:item_id>')
+def doneItem(item_id):
+    if session.get('username') is not None:
+        item = Session.query(ListItems).filter_by(id=item_id).one()
+        item.done = True
+        Session.add(item)
+        Session.commit()
+        return redirect(url_for('viewList', team_id = item.team_id))
+    else:
+        return redirect(url_for('not_found'))
+
+
+@app.route('/undone_item/<int:item_id>')
+def undoneItem(item_id):
+    if session.get('username') is not None:
+        item = Session.query(ListItems).filter_by(id=item_id).one()
+        item.done = False
+        Session.add(item)
+        Session.commit()
+        return redirect(url_for('viewList', team_id = item.team_id))
     else:
         return redirect(url_for('not_found'))
 
