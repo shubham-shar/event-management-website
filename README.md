@@ -28,4 +28,4 @@ Surya Kant Bansal
 E-Mail - skb1129@yahoo.com
 
 Sparsh Rana
-E-Mail - coolsparsh.1997@gmail.com
+E-Mail - sparshranaazz@gmail.com
