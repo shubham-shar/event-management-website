@@ -1,31 +1,51 @@
-Hardware Requirements :
-    1. A computer running Windows, Mac or Linux.
-    2. Minimum 256 MB free RAM.
-    3. Minimum 500 MB of free HardDisk space.
+# Event Management Website:
 
-Software Requirements :
-    1. Python v2.7
-    2. Flask Libraries for Python
-    3. SqlAlchemy for Python
-    
-Files :
-    1. database_setup.py : Code to create and setup the database.
-    2. root.py : Code to add the master account root to the database.
-        username = root
-        password = root
-    3. website.py : Code to link the webpages to the database.
-    4. static directory : Contains all CSS, JavaScript, Images and Uploads.
-    5. templates directory : Contains all the HTML webpages.
+## Build
 
-How to run the application :
-    1. Run the database_setup.py file.
-    2. Run the root.py file.
-    3. Run the website.py file.
-    4. On your browser, go to http://localhost:5000/ .
-    
-Owner :
-Surya Kant Bansal
+* This project is built using HTML, CSS, JavaScript and Python v2.7 languages.
+* It is tested on Chrome v61.0 and Firefox v57.0.
+* It uses Python Flask framework for server side application.
+* It uses Python Sqlalchemy SQL toolkit for database operations in Python.
+* It uses Bootstrap 3 for styling.
+* It uses jQuery, Popper, Bootstrap JavaScript libraries.
+
+## Instructions
+
+* Start a Vagrant Virtualbox Machine inside the project directory.
+* Install <code>python-pip</code>(Python Package Index) to install python frameworks.
+* Install <code>flask</code>, <code>sqlalchemy</code> and <code>oauth2client</code> using <code>pip</code>.
+* Inside vagrant machine, goto <code>/vagrant</code> directory.
+* Run <code>python database_setup.py</code>, <code>python add_data.py</code>, <code>python root.py</code> and <code>python website.py</code> respectively.
+* Finally, in your browser, goto <code>localhost:8000</code>, to access the website.
+
+## Dependencies
+
+* Bootstrap v3
+* jQuery
+* PopperJS
+* Flask
+* Sqlalchemy
+   
+## Wiki
+* database_setup.py : Code to create and setup the database.
+* root.py : Code to add the master account root to the database.
+```
+    username = root
+    password = root
+```
+* website.py : Code to link the webpages to the database.
+* static directory : Contains all CSS, JavaScript, Images and Uploads.
+* templates directory : Contains all the HTML webpages.
+
+### Contributers :
+Surya Kant Bansal  
 E-Mail - skb1129@yahoo.com
 
-Sparsh Rana
+Sparsh Rana  
 E-Mail - sparshranaazz@gmail.com
+
+Shubham Sharma  
+E-Mail - shubham.1997.33@gmail.com
+
+Shubham Jindal  
+E-Mail - shubhamjindal1234@gmail.com
