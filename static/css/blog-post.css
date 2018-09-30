@@ -1,0 +1,12 @@
+body {
+    padding-top: 70px;
+}
+
+footer {
+    margin: 50px 0;
+}
+
+.error {
+    text-align: center;
+    color: #f5220d;
+}

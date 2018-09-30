@@ -1,0 +1,15 @@
+{% extends "dashboard/base.html" %} {% block content %}
+<!-- Event -->
+{% for team in teams %}
+<div class="row">
+    <div class="col-md-12">
+        <h3>{{team.name}}</h3>
+        <a class="btn btn-primary" href="{{url_for('teamMembers', team_id=team.id)}}">View Team<span class="glyphicon glyphicon-chevron-right"></span></a>
+        <a class="btn btn-primary" href="{{url_for('teamList', team_id=team.id)}}">View List<span class="glyphicon glyphicon-chevron-right"></span></a>
+        <a class="btn btn-primary" href="{{url_for('deleteTeam', team_id=team.id)}}">Delete Team<span class="glyphicon glyphicon-chevron-right"></span></a>
+        <a class="btn btn-primary" href="{{url_for('teamMessage', team_id=team.id)}}">Send Message<span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div>
+</div>
+<hr>
+<!-- /.row -->
+{% endfor %} {% endblock %}

@@ -1,0 +1,30 @@
+{% extends "dashboard/base.html" %} {% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>{{team.name}}</h3> {% for item in items %} {% if item.done != True %}
+        <p>{{item.item}} | <a href="{{url_for('deleteItem', item_id=item.id)}}">delete</a></p>
+        {% else %}
+        <p><del>{{item.item}}</del> | <a href="{{url_for('deleteItem', item_id=item.id)}}">delete</a></p>
+        {% endif %} {% endfor %}
+        <form class="form-horizontal" action="#" method="post">
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Add Item:</label>
+                    <div class="col-md-4">
+                        <input name="item" type="text" class="form-control input-md" required="">
+                    </div>
+                </div>
+                <!-- Button -->
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

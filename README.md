@@ -1,27 +1,51 @@
-# [Start Bootstrap](http://startbootstrap.com/) - [1 Col Portfolio](http://startbootstrap.com/template-overviews/1-col-portfolio/)
+# Event Management Website:
 
-[1 Col Portfolio](http://startbootstrap.com/template-overviews/1-col-portfolio/) is a one column portfolio template for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/).
+## Build
 
-## Getting Started
+* This project is built using HTML, CSS, JavaScript and Python v2.7 languages.
+* It is tested on Chrome v61.0 and Firefox v57.0.
+* It uses Python Flask framework for server side application.
+* It uses Python Sqlalchemy SQL toolkit for database operations in Python.
+* It uses Bootstrap 3 for styling.
+* It uses jQuery, Popper, Bootstrap JavaScript libraries.
 
-To begin using this template, choose one of the following options to get started:
-* [Download the latest release on Start Bootstrap](http://startbootstrap.com/template-overviews/1-col-portfolio/)
-* Clone the repo: `git clone https://github.com/BlackrockDigital/startbootstrap-1-col-portfolio.git`
-* Fork the repo
+## Instructions
 
-## Bugs and Issues
+* Start a Vagrant Virtualbox Machine inside the project directory.
+* Install <code>python-pip</code>(Python Package Index) to install python frameworks.
+* Install <code>flask</code>, <code>sqlalchemy</code> and <code>oauth2client</code> using <code>pip</code>.
+* Inside vagrant machine, goto <code>/vagrant</code> directory.
+* Run <code>python database_setup.py</code>, <code>python add_data.py</code>, <code>python root.py</code> and <code>python website.py</code> respectively.
+* Finally, in your browser, goto <code>localhost:8000</code>, to access the website.
 
-Have a bug or an issue with this template? [Open a new issue](https://github.com/BlackrockDigital/startbootstrap-1-col-portfolio/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/1-col-portfolio/).
+## Dependencies
 
-## Creator
+* Bootstrap v3
+* jQuery
+* PopperJS
+* Flask
+* Sqlalchemy
+   
+## Wiki
+* database_setup.py : Code to create and setup the database.
+* root.py : Code to add the master account root to the database.
+```
+    username = root
+    password = root
+```
+* website.py : Code to link the webpages to the database.
+* static directory : Contains all CSS, JavaScript, Images and Uploads.
+* templates directory : Contains all the HTML webpages.
 
-Start Bootstrap was created by and is maintained by **[David Miller](http://davidmiller.io/)**, Owner of [Blackrock Digital](http://blackrockdigital.io/).
+### Contributers :
+Surya Kant Bansal  
+E-Mail - skb1129@yahoo.com
 
-* https://twitter.com/davidmillerskt
-* https://github.com/davidtmiller
+Sparsh Rana  
+E-Mail - sparshranaazz@gmail.com
 
-Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
+Shubham Sharma  
+E-Mail - shubham.1997.33@gmail.com
 
-## Copyright and License
-
-Copyright 2013-2016 Blackrock Digital LLC. Code released under the [MIT](https://github.com/BlackrockDigital/startbootstrap-1-col-portfolio/blob/gh-pages/LICENSE) license.
+Shubham Jindal  
+E-Mail - shubhamjindal1234@gmail.com

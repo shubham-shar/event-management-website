@@ -1,0 +1,31 @@
+{% extends "dashboard/base.html" %} {% block content %}
+<div class="col-lg-8">
+    <!-- Title -->
+    <h1>{{event.title}}</h1>
+    <!-- Author -->
+    <p class="lead">
+        by <a href="#">{{event.club}}</a>
+    </p>
+    <p>Event Head : <a href="{{url_for('viewProfile', username=event.head)}}">{{event.head}}</a></p>
+    <hr>
+    <!-- Date/Time -->
+    <p><span class="glyphicon glyphicon-time"></span> Posted on {{event.post_date}}</p>
+    <hr>
+    <!-- Preview Image -->
+    <img class="img-responsive" src="{{ url_for('static', filename='uploads/' + event.id|string + '.jpg') }}" alt="">
+    <hr>
+    <!-- Post Content -->
+    <p>{{event.description}}</p>
+    <hr>
+</div>
+
+<div class="col-md-4">
+    <hr>
+    <a class="btn btn-primary" href="{{url_for('editEvent', event_id=event.id)}}">Edit Event<span class="glyphicon glyphicon-chevron-right"></span></a>
+    <hr>
+    <a class="btn btn-primary" href="{{url_for('deleteEvent', event_id=event.id)}}">Delete Event<span class="glyphicon glyphicon-chevron-right"></span></a>
+    <hr>
+    <a class="btn btn-primary" href="{{url_for('createTeam', event_id=event.id)}}">Add Team<span class="glyphicon glyphicon-chevron-right"></span></a>
+    <hr>
+</div>
+{% endblock %}

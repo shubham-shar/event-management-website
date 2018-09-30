@@ -1,0 +1,45 @@
+{% extends "dashboard/base.html" %} {% block content %}
+<!-- Event -->
+{% for member in members %}
+<div class="row">
+    <div class="col-md-12">
+        <h3>{{member.member}} | <a href="{{url_for('viewProfile', username=member.member)}}"><small>profile</small></a> | <a href="{{url_for('removeMember', member_id=member.id)}}"><small>remove</small></a></h3>
+    </div>
+</div>
+<hr>
+<!-- /.row -->
+{% endfor %}
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-horizontal" action="#" method="post">
+            <fieldset>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <h2>Add a Member :</h2><br>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Username:</label>
+                    <div class="col-md-4">
+                        <select name="username" class="form-control">
+                            {% for user in users %}
+                            {% if user.username != logged and (user.acc_type == 'default' or user.acc_type == 'member') %}
+                            <option value="{{user.username}}">{{user.username}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <!-- Button -->
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}

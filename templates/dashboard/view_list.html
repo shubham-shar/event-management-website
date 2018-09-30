@@ -1,0 +1,15 @@
+{% extends "dashboard/base.html" %} {% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        {% for item in items %}
+        {% if item.done != True %}
+        <p>{{item.item}} | <a href="{{url_for('doneItem', item_id=item.id)}}">done</a></p>
+        {% else %}
+        <p><del>{{item.item}}</del> | <a href="{{url_for('undoneItem', item_id=item.id)}}">undone</a></p>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

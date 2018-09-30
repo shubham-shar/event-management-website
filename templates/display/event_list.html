@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/x-icon" href="http://punjab.chitkara.edu.in//Storage/Images/favicon.ico">
+
+    <title>
+        {% if event_type=='ongoing' %} Ongoing {% elif event_type=='upcoming' %} Upcoming {% elif event_type=='previous' %} Previous {% endif %} Events
+    </title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='css/1-col-portfolio.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand text-uppercase" href="{{ url_for('mainPage') }}">F<small>ester</small></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if event_type == 'upcoming' %}
+                    <li class="active">
+                        <a href="{{url_for('eventList', event_type='upcoming')}}">Upcoming</a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('eventList', event_type='ongoing')}}">Ongoing</a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('eventList', event_type='previous')}}">Previous</a>
+                    </li>
+                    {% elif event_type == 'ongoing' %}
+                    <li>
+                        <a href="{{url_for('eventList', event_type='upcoming')}}">Upcoming</a>
+                    </li>
+                    <li class="active">
+                        <a href="{{url_for('eventList', event_type='ongoing')}}">Ongoing</a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('eventList', event_type='previous')}}">Previous</a>
+                    </li>
+                    {% elif event_type == 'previous' %}
+                    <li>
+                        <a href="{{url_for('eventList', event_type='upcoming')}}">Upcoming</a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('eventList', event_type='ongoing')}}">Ongoing</a>
+                    </li>
+                    <li class="active">
+                        <a href="{{url_for('eventList', event_type='previous')}}">Previous</a>
+                    </li>
+                    {% endif %} {% if logged == None %}
+                    <li>
+                        <a href="{{ url_for('loginPage') }}">Login</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    {% if event_type=='ongoing' %}
+                    Ongoing
+                    {% elif event_type=='upcoming' %}
+                    Upcoming
+                    {% elif event_type=='previous' %}
+                    Previous
+                    {% endif %}
+                    <small>Events</small>
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        {% for event in events %}
+        <div class="row">
+            <div class="col-md-7">
+                <a href="#">
+                    <img class="img-responsive" src="{{ url_for('static', filename='uploads/' + event.id|string + '.jpg') }}" height="400" alt="">
+                </a>
+            </div>
+            <div class="col-md-5">
+                <h3>{{event.title}}</h3>
+                <p class="desc">{{event.description}}</p>
+                <a class="btn btn-primary" href="{{url_for('eventInfo', event_id=event.id)}}">View Event<span class="glyphicon glyphicon-chevron-right"></span></a>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <hr> {% endfor %}
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Fester 2017</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+</body>
+
+</html>

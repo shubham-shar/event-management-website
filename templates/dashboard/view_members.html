@@ -1,0 +1,9 @@
+{% extends "dashboard/base.html" %} {% block content %}
+<!-- Event -->
+{% for member in members %}
+<div class="row">
+    <div class="col-md-12">
+        <h3>{{member.member}} | <a href="{{url_for('viewProfile', username=member.member)}}"><small>profile</small></a></h3>
+    </div>
+</div>
+{% endfor %} {% endblock %}

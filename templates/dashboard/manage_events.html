@@ -1,0 +1,18 @@
+{% extends "dashboard/base.html" %} {% block content %}
+<!-- Event -->
+<hr> {% for event in events %}
+<div class="row">
+    <div class="col-md-7">
+        <a href="#">
+            <img class="img-responsive" src="{{ url_for('static', filename='uploads/' + event.id|string + '.jpg') }}" width="700" alt="">
+        </a>
+    </div>
+    <div class="col-md-5">
+        <h3>{{event.title}}</h3>
+        <p>{{event.description}}</p>
+        <a class="btn btn-primary" href="{{url_for('eventOptions', event_id=event.id)}}">Manage<span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div>
+</div>
+<hr>
+<!-- /.row -->
+{% endfor %} {% endblock %}
